@@ -1,14 +1,17 @@
 let gastomensual = [];
 let ventamensual = [];
 
-const menuPrincipal = ["Venta", "Gastos", "Balance mensual"];
-const subMenuVenta = ["Registrar venta", "Cerrar caja del día", "Cerrar ventas del mes"];
-const subMenuGastos = ["Registrar gasto", "Cerrar gastos del día", "Cerrar gastos del mes"];
+let categoriaventa;
+let montoventa;
+let categoriagasto;
+let montogasto;
+let balanceMensual;
 
+const menuPrincipal = ["Venta", "Gastos", "Balance"];
 let opcionMenuPrincipal;
 
 do {
-    opcionMenuPrincipal = prompt(`Seleccione una opción:\n1. ${menuPrincipal[0]}\n2. ${menuPrincipal[1]}\n3. ${menuPrincipal[2]}\nIngrese 'salir' para salir.`);
+    opcionMenuPrincipal = prompt(`Seleccione una opción:\n1. ${menuPrincipal[0]}\n2. ${menuPrincipal[1]}\n3. ${menuPrincipal[2]}`);
     // Convertir la opción a número si es válida
     opcionMenuPrincipal = parseInt(opcionMenuPrincipal);
 
@@ -28,15 +31,15 @@ do {
         default:
             break;
     }
-} while (opcionMenuPrincipal !== 'salir');
+} while (opcionMenuPrincipal !== 4);
+
+
 
 function registrarVenta() {
-    let categoriaventa;
-    let montoventa;
-
+    
     do {
         categoriaventa = prompt("Ingrese la categoría de la venta:");
-    } while (!/^[a-zA-Z]+$/.test(categoriaventa)); // Verificar que solo se ingresen letras
+    } while (!/^[a-zA-Z]+$/.test(categoriaventa.trim())); // Verificar que solo se ingresen letras (mayúsculas o minúsculas)
 
     do {
         montoventa = parseFloat(prompt("Ingrese el monto de la venta:"));
@@ -50,14 +53,14 @@ function registrarVenta() {
     console.log("Venta registrada:", venta);
 }
 
+
 function registrarGasto() {
-    let categoriagasto;
-    let montogasto;
+    
 
     do {
         categoriagasto = prompt("Ingrese la categoría del gasto:");
-    } while (!/^[a-zA-Z]+$/.test(categoriagasto)); // Verificar que solo se ingresen letras
-
+    } while (!/^[a-zA-Z]+$/.test(categoriagasto.trim())); // Verificar que solo se ingresen letras (mayúsculas o minúsculas)
+    
     do {
         montogasto = parseFloat(prompt("Ingrese el monto del gasto:"));
     } while (isNaN(montogasto)); // Verificar que se ingrese un número
@@ -73,9 +76,17 @@ function registrarGasto() {
 function calcularBalanceMensual() {
     let totalVentas = ventamensual.reduce((total, venta) => total + venta.monto, 0);
     let totalGastos = gastomensual.reduce((total, gasto) => total + gasto.monto, 0);
-    let balanceMensual = totalVentas - totalGastos;
-    console.log("Balance Mensual:", balanceMensual);
+    balanceMensual = totalVentas - totalGastos;
+    mostrarbalance();
+    prompt("Ver el balance en consola. Presione aceptar para volver al menu principal.");
 }
 
+function mostrarbalance(){
+    console.log("Categorias de ventas: ", categoriaventa);
+    console.log("Ventas totales: ", ventamensual);
+    console.log("Categoria de gastos: ", categoriagasto);
+    console.log("Gastos totales: ", gastomensual);
+    console.log("Balance: ", balanceMensual);
+}
 
 
