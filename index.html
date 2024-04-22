@@ -4,8 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema contable</title>
+    <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
+    <header class="header"> 
+        <div class="container">
+            <h1>Sistema contable</h1>
+        </div>
+    </header>
+    <main class="container">
+        <section class="menu">
+            <div class="venta">
+                <button id="ventaBtn" class="btn"> Venta </button>
+
+            </div>
+            <div>
+                <button id="gastoBtn" class="btn"> Gasto </button>
+            </div>
+            <div class="balance">   
+                <button id="balanceBtn" class="btn"> Balance </button>
+            </div>
+        </section>
+
+        <section class="monitor container">
+            <div class="mon-ventas">
+                <h2>Ventas</h2>
+                <div id="no-ventas">
+                    <h4>No ha registrado ninguna venta.</h4>
+                </div>
+                <div class="reg-ventas" id="reg-ventas">
+
+                </div>
+                <div class="ventas-total">
+                    <h2>Total: <span id="ventas-total">$0</span></h2>
+                </div>
+            </div>
+            <br>
+            <div class="mon-gastos">
+                <h2>Gastos</h2>
+                <div id="no-gastos">
+                    <h4>No se han registrado gastos.</h4>
+                </div>
+                <div class="reg-gastos" id="reg-gastos">
+                    
+                </div>
+                <div class="gasto-total">
+                    <h2>Total: <span id="gasto-total">$0</span></h2>
+                </div>
+            </div>
+
+        </section>
+        
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>S.C @</p>
+        </div>
+    </footer>
 
     <script src="./js/main.js"></script>
 </body>
