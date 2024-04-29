@@ -1,5 +1,7 @@
-const gastomensual = [];
-const ventamensual = [];
+const gastomensual = JSON.parse(localStorage.getItem("gastomensual")) || [];
+console.log(gastomensual);
+const ventamensual = JSON.parse(localStorage.getItem("ventamensual")) || [];
+console.log(ventamensual);
 
 let categoriaventa;
 let montoventa;
@@ -7,9 +9,16 @@ let categoriagasto;
 let montogasto;
 let balanceMensual;
 
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("ventaBtn").addEventListener("click", registrarVenta);
+    document.getElementById("gastoBtn").addEventListener("click", registrarGasto);
+    document.getElementById("balanceBtn").addEventListener("click", mostrarBalanceVentasYGastos);
+
+});
+
 document.getElementById("ventaBtn").addEventListener("click", registrarVenta);
 document.getElementById("gastoBtn").addEventListener("click", registrarGasto);
-document.getElementById("balanceBtn").addEventListener("click", calcularBalanceMensual,mostrarbalance);
+document.getElementById("balanceBtn").addEventListener("click", mostrarBalanceVentasYGastos);
 
 const noVentas = document.querySelector("#no-ventas");
 const noGastos = document.querySelector("#no-gastos");
@@ -42,6 +51,18 @@ function registrarVenta() {
 
     calcularTotalVentas();
     actualizarVenta();
+
+    Toastify({
+        text: "Venta Registrada.",
+        duration: 1500,
+        position: "left",
+        style: {
+          background: "#ff4500",
+          color: "#f5f5f5",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast();
+
 }
 
 function calcularTotalVentas() {
@@ -80,6 +101,7 @@ const actualizarVenta = () => {
         })
     }
     calcularTotalVentas();
+    localStorage.setItem("ventamensual", JSON.stringify(ventamensual));
 }
 
 const borrarVenta = (venta) => {
@@ -113,6 +135,18 @@ function registrarGasto() {
 
     calcularTotalGastos();
     actualizarGasto();
+
+    Toastify({
+        text: "Gasto Registrado.",
+        duration: 1500,
+        position: "right",
+        style: {
+          background: "#ff4500",
+          color: "#f5f5f5",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast();
+
 }
 
 function calcularTotalGastos() {
@@ -150,6 +184,7 @@ const actualizarGasto = () => {
         });
     }
     calcularTotalGastos();
+    localStorage.setItem("gastomensual", JSON.stringify(gastomensual));
 }
 
 const borrarGasto = (gasto) => {
@@ -162,21 +197,31 @@ const borrarGasto = (gasto) => {
 };
 
 
-function calcularBalanceMensual() {
+function mostrarBalanceVentasYGastos() {
     let totalVentas = ventamensual.reduce((total, venta) => total + venta.monto, 0);
     let totalGastos = gastomensual.reduce((total, gasto) => total + gasto.monto, 0);
-    balanceMensual = totalVentas - totalGastos;
-    mostrarbalance();
-    prompt("Ver el balance en consola. Presione aceptar para volver al menu principal.");
+
+    let balance = totalVentas - totalGastos;
+
+    Swal.fire({
+        title: "Balance mensual",
+        html: `Total Ventas: $${totalVentas}<br>Total Gastos: $${totalGastos}<br>Ganancia: $${balance}`,
+        showCancelButton: true,
+        confirmButtonText: "Cerrar caja",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ventamensual.length = 0;
+            gastomensual.length = 0;
+            actualizarVenta();
+            actualizarGasto();
+            Swal.fire("Mes Finalizado", "", "success");
+        }
+    });
+    
 }
 
-function mostrarbalance(){
-    console.log("Categorias de ventas: ", categoriaventa);
-    console.log("Ventas totales: ", ventamensual);
-    console.log("Categoria de gastos: ", categoriagasto);
-    console.log("Gastos totales: ", gastomensual);
-    console.log("Balance: ", balanceMensual);
-}
 
-
+actualizarGasto();
+actualizarVenta();
 
